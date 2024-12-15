@@ -45,7 +45,7 @@ jobs:
 
     - name: Update version in version.cs
       run: |
-        #TODO: implement with "sed -i"
+        sed -i "s/public const string version = \"\([0-9]\+\)\"/$new_version/" sub/version.cs
 
     - name: Commit and push with next version
       run: |
