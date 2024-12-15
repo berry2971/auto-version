@@ -13,5 +13,10 @@
         {
             this.id = int.TryParse(id, out this.id) ? this.id : 0;
         }
+
+        ~data()
+        {
+
+        }
     }
 }
