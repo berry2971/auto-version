@@ -27,20 +27,29 @@ jobs:
         ### Parse
         # split version_curr
         IFS='.' read -r -a version_curr_parts <<< "$version_curr"
+        echo "version_curr_parts[0]: ${version_curr_parts[0]}"
+        echo "version_curr_parts[1]: ${version_curr_parts[1]}"
+        echo "version_curr_parts[2]: ${version_curr_parts[2]}"
 
         # get version_product
         version_product=${version_curr_parts[0]}
+        echo "version_product: $version_product"
 
         # get current date
         year=$(TZ="Asia/Seoul" date +"%y")
         month=$(TZ="Asia/Seoul" date +"%m")
         day=$(TZ="Asia/Seoul" date +"%d")
+        echo "year: $year"
+        echo "month: $month"
+        echo "day: $day"
 
         # get version_curr_seq
         version_curr_seq="${version_curr_parts[2]: -1}"
+        echo "version_curr_seq: $version_curr_seq"
 
-        ### Increase        
+        ### Increase
         version_next_seq=$((version_curr_seq + 1))
+        echo "version_next_seq: $version_next_seq"
 
         ### Finally
         version_next="${version_product}.${year}.${month}${day}${version_next_seq}"
@@ -48,6 +57,7 @@ jobs:
 
     - name: Update version in version.cs
       run: |
+        sed "s/public const string version = \"\([0-9]\+\)\"/$new_version/" sub/version.cs
         sed -i "s/public const string version = \"\([0-9]\+\)\"/$new_version/" sub/version.cs
 
     - name: Commit and push with next version
