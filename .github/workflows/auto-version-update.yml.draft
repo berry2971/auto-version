@@ -1,0 +1,58 @@
+name: Auto Version on PR merge
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  update_version:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Get last version from the latest commit
+      run: |
+        version_curr=$(git show HEAD:sub/version.cs | grep -oP 'public const string version="\K[^"]+')
+        echo "version curr: $version_curr"
+
+    - name: Parse and increase version
+      run: |
+        ### Parse
+        # split version_curr
+        IFS='.' read -r -a version_curr_parts <<< "$version_curr"
+
+        # get version_product
+        version_product=${version_curr_parts[0]}
+
+        # get current date
+        year=$(TZ="Asia/Seoul" date +"%y")
+        month=$(TZ="Asia/Seoul" date +"%m")
+        day=$(TZ="Asia/Seoul" date +"%d")
+
+        # get version_curr_seq
+        version_curr_seq="${version_curr_parts[2]: -1}"
+
+        ### Increase        
+        version_next_seq=$((version_curr_seq + 1))
+
+        ### Finally
+        version_next="${version_product}.${year}.${month}${day}${version_next_seq}"
+        echo "version next: $version_next"
+
+    - name: Update version in version.cs
+      run: |
+        #TODO: implement with "sed -i"
+
+    - name: Commit and push with next version
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git add sub/version.cs
+        git add manifest.xml
+        git commit -m "Update version to $version_next"
+        git push origin main
+        #TODO: implement identical logic on manifest.xml file
