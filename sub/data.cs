@@ -1,4 +1,4 @@
-﻿namespace AutoVersion.sub
+﻿namespace AutoVersion
 {
     class data
     {
