@@ -15,7 +15,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Show HEAD
-      uses: $(git show HEAD:sub/version.cs)
+      uses: git show HEAD:sub/version.cs
 
     - name: Get last version from the latest commit
       run: |
