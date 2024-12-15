@@ -19,7 +19,7 @@ jobs:
 
     - name: Get last version from the latest commit
       run: |
-        version_curr=$(git show HEAD:sub/version.cs | grep -oP 'public const string version="\K[^"]+')
+        version_curr=$(git show HEAD:sub/version.cs | grep -oP 'public const string version = "\K[^"]+')
         echo "version curr: $version_curr"
 
     - name: Parse and increase version
