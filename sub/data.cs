@@ -18,5 +18,10 @@
         {
 
         }
+
+        public string msg()
+        {
+            return $"[msg] id: {id}";
+        }
     }
 }
