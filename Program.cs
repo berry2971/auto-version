@@ -1,4 +1,6 @@
-﻿namespace auto.version
+﻿using System;
+
+namespace auto.version
 {
     class Program
     {
