@@ -17,14 +17,13 @@ jobs:
     - name: Show HEAD
       run: git show HEAD:sub/version.cs
 
-    - name: Get last version from the latest commit
-      run: |
-        version_curr=$(git show HEAD:sub/version.cs | grep -oP 'public const string version = "\K[^"]+')
-        echo "version curr: $version_curr"
-
     - name: Parse and increase version
       run: |
         ### Parse
+        # get last version from the latest commit
+        version_curr=$(git show HEAD:sub/version.cs | grep -oP 'public const string version = "\K[^"]+')
+        echo "version curr: $version_curr"
+
         # split version_curr
         IFS='.' read -r -a version_curr_parts <<< "$version_curr"
         echo "version_curr_parts[0]: ${version_curr_parts[0]}"
