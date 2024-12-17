@@ -42,13 +42,31 @@ jobs:
         echo "month: $month"
         echo "day: $day"
 
+        # get are_dates_equal
+        curr_y=${version_curr_parts[1]}
+        curr_md=${version_curr_parts[2]:0:4}
+        next_y=$year
+        next_md=$month$day
+        are_dates_equal=$((curr_y == next_y && curr_md == next_md))
+
+        ### Generate next version
         # get version_curr_seq
-        version_curr_seq="${version_curr_parts[2]: -1}"
+        version_curr_seq=0
+        minor_version_curr_length=${#version_curr_parts[2]}
+        if ((minor_version_curr_length == 5)); then
+          version_curr_seq=${version_curr_parts[2]: -1}
+        elif ((minor_version_curr_length == 6)); then
+          version_curr_seq=${version_curr_parts[2]: -2:2}
+        fi
         echo "version_curr_seq: $version_curr_seq"
 
-        ### Increase
         # get version_next_seq
-        version_next_seq=$((version_curr_seq + 1))
+        version_next_seq=0
+        if ((are_dates_equal)); then
+          version_next_seq=$((version_curr_seq + 1))
+        else
+          version_next_seq=1
+        fi
         echo "version_next_seq: $version_next_seq"
 
         # get version_next
