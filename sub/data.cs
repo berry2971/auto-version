@@ -27,5 +27,10 @@ namespace AutoVersion
         {
             Console.WriteLine($"id: {id}");
         }
+
+        public int getId()
+        {
+            return id;
+        }
     }
 }
