@@ -53,14 +53,14 @@ jobs:
 
         # get version_next
         version_next="${version_product}.${year}.${month}${day}${version_next_seq}"
-        echo "version next: $version_next"
+        echo "version_next: $version_next"
 
         ### Update version in version.cs
         # check
-        sed "s/public const string version = \"\([0-9]\+\)\"/$new_version/" sub/version.cs
+        #sed "s/\(public const string version = \"\)[0-9.]*\(\"\)/\1$new_version\2/") sub/version.cs
 
         # execute
-        sed -i "s/public const string version = \"\([0-9]\+\)\"/$new_version/" sub/version.cs
+        sed -i "s/\(public const string version = \"\)[0-9.]*\(\"\)/\1$new_version\2/") sub/version.cs
 
     - name: Commit and push with next version
       run: |
