@@ -22,5 +22,10 @@ namespace AutoVersion
         {
             Console.WriteLine("destructor");
         }
+
+        public void print()
+        {
+
+        }
     }
 }
