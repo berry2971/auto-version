@@ -9,13 +9,13 @@ namespace AutoVersion
         public data(int id)
         {
             this.id = id;
-            Console.WriteLine($"id: ${id}");
+            Console.WriteLine($"id: {id}");
         }
 
         public data(string id)
         {
             this.id = int.TryParse(id, out this.id) ? this.id : 0;
-            Console.WriteLine($"id: ${id}");
+            Console.WriteLine($"id: {id}");
         }
 
         ~data()
@@ -25,7 +25,7 @@ namespace AutoVersion
 
         public void print()
         {
-
+            Console.WriteLine($"id: {id}");
         }
     }
 }
