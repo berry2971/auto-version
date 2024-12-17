@@ -57,10 +57,10 @@ jobs:
 
         ### Update version in version.cs
         # check
-        #sed "s/\(public const string version = \"\)[0-9.]*\(\"\)/\1$new_version\2/") sub/version.cs
+        #sed "s/\(public const string version = \"\)[0-9.]*\(\"\)/\1$version_next\2/") sub/version.cs
 
         # execute
-        sed -i "s/\(public const string version = \"\)[0-9.]*\(\"\)/\1$new_version\2/" sub/version.cs
+        sed -i "s/\(public const string version = \"\)[0-9.]*\(\"\)/\1$version_next\2/" sub/version.cs
 
     - name: Commit and push with next version
       run: |
