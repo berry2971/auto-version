@@ -2,6 +2,6 @@
 {
     class Version
     {
-        public const string version = "1.24.12182";
+        public const string version = "1.24.12183";
     }
 }
