@@ -4,7 +4,7 @@ namespace AutoVersion
 {
     class data
     {
-        private int id;
+        private int id; // id of data
 
         public data(int id)
         {
