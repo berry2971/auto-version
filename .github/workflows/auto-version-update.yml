@@ -92,7 +92,7 @@ jobs:
 
         # execute
         sed -i "s/\(public const string version = \"\)[0-9.]*\(\"\)/\1$ver_next\2/" sub/version.cs
-        sed -i "s@\(<version>\)[^<]*\(<\/version>\)@\1$ver_next\2@" version.xml
+        sed -i "s@\(<version>\)[^<]*\(<\/version>\)@\1$ver_next\2@" manifest.xml
 
     - name: Commit and push with next version
       run: |
