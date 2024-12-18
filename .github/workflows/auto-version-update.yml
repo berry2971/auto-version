@@ -19,20 +19,33 @@ jobs:
 
     - name: Parse and increase version
       run: |
+        ### Note
+        # ver_1: version of manifest.xml
+        # ver_2: version of CommonDefine.cs
+
         ### Parse
         # get last version from the latest commit
-        version_curr=$(git show HEAD:sub/version.cs | grep -oP 'public const string version = "\K[^"]+')
-        echo "version curr: $version_curr"
+        ver_curr_1=$(git show HEAD:manifest.xml | grep -oP '(?<=<version>).*?(?=</version>)')
+        ver_curr_2=$(git show HEAD:sub/version.cs | grep -oP 'public const string version = "\K[^"]+')
+        echo "ver_curr_1: $ver_curr_1"
+        echo "ver_curr_2: $ver_curr_2"
 
-        # split version_curr
-        IFS='.' read -r -a version_curr_parts <<< "$version_curr"
-        echo "version_curr_parts[0]: ${version_curr_parts[0]}"
-        echo "version_curr_parts[1]: ${version_curr_parts[1]}"
-        echo "version_curr_parts[2]: ${version_curr_parts[2]}"
+        # check if there is no problem with the version
+        if [[ "$ver_curr_1" != "$ver_curr_2" ]]; then
+          echo "The version of manifest.xml and the version of CommonDefine.cs are not the same"
+          exit 1
+        fi
+        ver_curr=$ver_curr_1
 
-        # get version_product
-        version_product=${version_curr_parts[0]}
-        echo "version_product: $version_product"
+        # split ver_curr
+        IFS='.' read -r -a ver_curr_parts <<< "$ver_curr"
+        echo "ver_curr_parts[0]: ${ver_curr_parts[0]}"
+        echo "ver_curr_parts[1]: ${ver_curr_parts[1]}"
+        echo "ver_curr_parts[2]: ${ver_curr_parts[2]}"
+
+        # get ver_product
+        ver_product=${ver_curr_parts[0]}
+        echo "ver_product: $ver_product"
 
         # get current date
         year=$(TZ="Asia/Seoul" date +"%y")
@@ -43,42 +56,43 @@ jobs:
         echo "day: $day"
 
         # get are_dates_equal
-        curr_y=${version_curr_parts[1]}
-        curr_md=${version_curr_parts[2]:0:4}
+        curr_y=${ver_curr_parts[1]}
+        curr_md=${ver_curr_parts[2]:0:4}
         next_y=$year
         next_md=$month$day
         are_dates_equal=$((curr_y == next_y && curr_md == next_md))
 
         ### Generate next version
         # get version_curr_seq
-        version_curr_seq=0
-        minor_version_curr_length=${#version_curr_parts[2]}
-        if ((minor_version_curr_length == 5)); then
-          version_curr_seq=${version_curr_parts[2]: -1}
-        elif ((minor_version_curr_length == 6)); then
-          version_curr_seq=${version_curr_parts[2]: -2:2}
+        ver_curr_seq=0
+        minor_ver_curr_length=${#ver_curr_parts[2]}
+        if ((minor_ver_curr_length == 5)); then
+          ver_curr_seq=${ver_curr_parts[2]: -1}
+        elif ((minor_ver_curr_length == 6)); then
+          ver_curr_seq=${ver_curr_parts[2]: -2:2}
         fi
-        echo "version_curr_seq: $version_curr_seq"
+        echo "ver_curr_seq: $ver_curr_seq"
 
         # get version_next_seq
-        version_next_seq=0
+        ver_next_seq=0
         if ((are_dates_equal)); then
-          version_next_seq=$((version_curr_seq + 1))
+          ver_next_seq=$((ver_curr_seq + 1))
         else
-          version_next_seq=1
+          ver_next_seq=1
         fi
-        echo "version_next_seq: $version_next_seq"
+        echo "ver_next_seq: $ver_next_seq"
 
         # get version_next
-        version_next="${version_product}.${year}.${month}${day}${version_next_seq}"
-        echo "version_next: $version_next"
+        ver_next="${version_product}.${year}.${month}${day}${ver_next_seq}"
+        echo "ver_next: $ver_next"
 
         ### Update version in version.cs
         # check
-        #sed "s/\(public const string version = \"\)[0-9.]*\(\"\)/\1$version_next\2/") sub/version.cs
+        # TODO: Write script for checking
 
         # execute
-        sed -i "s/\(public const string version = \"\)[0-9.]*\(\"\)/\1$version_next\2/" sub/version.cs
+        sed -i "s/\(public const string version = \"\)[0-9.]*\(\"\)/\1$ver_next\2/" sub/version.cs
+        sed -i "s@\(<version>\)[^<]*\(<\/version>\)@\1$ver_next\2@" version.xml
 
     - name: Commit and push with next version
       run: |
@@ -86,6 +100,5 @@ jobs:
         git config user.email "actions@github.com"
         git add sub/version.cs
         git add manifest.xml
-        git commit -m "Update version to $version_next"
+        git commit -m "Update version to $ver_next"
         git push origin main
-        #TODO: implement identical logic on manifest.xml file
