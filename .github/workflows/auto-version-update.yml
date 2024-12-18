@@ -83,7 +83,7 @@ jobs:
         echo "ver_next_seq: $ver_next_seq"
 
         # get version_next
-        ver_next="${version_product}.${year}.${month}${day}${ver_next_seq}"
+        ver_next="${ver_product}.${year}.${month}${day}${ver_next_seq}"
         echo "ver_next: $ver_next"
 
         ### Update version in version.cs
