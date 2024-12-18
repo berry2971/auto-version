@@ -28,12 +28,12 @@ namespace AutoVersion
             Console.WriteLine($"id: {id}");
         }
 
-        public int getId()
+        public int getId() // get id
         {
             return id;
         } 
 
-        public void setId(int id)
+        public void setId(int id) // set id
         {
             this.id = id;
         }
