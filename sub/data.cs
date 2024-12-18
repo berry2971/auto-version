@@ -4,7 +4,7 @@ namespace AutoVersion
 {
     class data
     {
-        private readonly int id;
+        private int id;
 
         public data(int id)
         {
@@ -31,7 +31,7 @@ namespace AutoVersion
         public int getId()
         {
             return id;
-        }
+        } 
 
         public void setId(int id)
         {
