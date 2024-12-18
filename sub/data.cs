@@ -23,11 +23,6 @@ namespace AutoVersion
             Console.WriteLine("destructor");
         }
 
-        public void print()
-        {
-            Console.WriteLine($"id: {id}");
-        }
-
         public int getId() // get id
         {
             return id;
@@ -36,6 +31,11 @@ namespace AutoVersion
         public void setId(int id) // set id
         {
             this.id = id;
+        }
+
+        public void print()
+        {
+            Console.WriteLine($"id: {id}");
         }
     }
 }
