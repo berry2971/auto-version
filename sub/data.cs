@@ -33,7 +33,7 @@ namespace AutoVersion
             this.id = id;
         }
 
-        public void print()
+        public void print() // print id
         {
             Console.WriteLine($"id: {id}");
         }
