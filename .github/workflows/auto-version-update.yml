@@ -85,6 +85,7 @@ jobs:
         # get version_next
         ver_next="${ver_product}.${year}.${month}${day}${ver_next_seq}"
         echo "ver_next: $ver_next"
+        echo "ver_next=${ver_next}" >> $GITHUB_ENV
 
         ### Update version in version.cs
         # check
